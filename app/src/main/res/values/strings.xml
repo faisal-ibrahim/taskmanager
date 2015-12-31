@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Task Manager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_task">CreateTask</string>
+    <string name="delete_reminder">Delete</string>
+    <string name="title_activity_display_task">DisplayTaskActivity</string>
+    <string name="title_activity_reminders">RemindersActivity</string>
+</resources>
