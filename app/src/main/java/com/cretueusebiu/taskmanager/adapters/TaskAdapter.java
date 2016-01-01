@@ -26,14 +26,21 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         }
 
         TextView titleView = (TextView) convertView.findViewById(R.id.task_item_title);
+        TextView notesView = (TextView) convertView.findViewById(R.id.task_item_notes);
 
         String title = task.getTitle();
+        String notes = task.getNotes();
 
-        if (title.isEmpty()) {
-            title = task.getNotes();
+        if (title.length() > 40) {
+            title = title.substring(0, 40) + "...";
+        }
+
+        if (notes.length() > 100) {
+            notes = notes.substring(0, 100) + "...";
         }
 
         titleView.setText(title);
+        notesView.setText(notes);
 
         return convertView;
     }

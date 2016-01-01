@@ -1,51 +1,44 @@
 package com.cretueusebiu.taskmanager.models;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Task extends AbstractModel implements Serializable {
+public class Reminder extends  AbstractModel implements Serializable {
 
     protected String id = null;
-    protected String title;
-    protected String notes;
+    protected String text;
     private String created = null;
     private String updated = null;
 
-    public Task(String title, String notes) {
-        this.title = title;
-        this.notes = notes;
+    public Reminder(String text) {
+        this.text = text;
     }
 
-    public Task(String title, String notes, String created, String updated) {
-        this.title = title;
-        this.notes = notes;
+    public Reminder(String text, String created, String updated) {
+        this.text = text;
         this.created = created;
         this.updated = updated;
     }
 
     public String getId() { return id; }
-    public String getTitle() { return title; }
-    public String getNotes() { return notes; }
+    public String getText() { return text; }
     public String getUpdated() { return updated; }
 
     public void setId(String id) {
         this.id = id;
     }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setText(String text) {
+        this.text = text;
     }
 
     /**
@@ -54,8 +47,7 @@ public class Task extends AbstractModel implements Serializable {
     @Override
     public void save() {
         ContentValues values = new ContentValues();
-        values.put(Entry.COLUMN_NAME_TITLE, this.getTitle());
-        values.put(Entry.COLUMN_NAME_NOTES, this.getNotes());
+        values.put(Entry.COLUMN_NAME_TEXT, this.getText());
 
         SimpleDateFormat ft = new SimpleDateFormat("MMMM d y, H:m");
         String now = ft.format(new Date());
@@ -80,25 +72,23 @@ public class Task extends AbstractModel implements Serializable {
     }
 
     /**
-     * Create a new task.
+     * Create a new reminder.
      *
-     * @param title
-     * @param notes
-     * @return Task
+     * @param text
+     * @return Reminder
      */
-    public static Task create(String title, String notes) {
-        Task task = new Task(title, notes);
-        task.save();
-        return task;
+    public static Reminder create(String text) {
+        Reminder reminder = new Reminder(text);
+        reminder.save();
+        return reminder;
     }
 
-    public static ArrayList<Task> all(boolean asc) {
-        ArrayList<Task> list = new ArrayList<>();
+    public static ArrayList<Reminder> all(boolean asc) {
+        ArrayList<Reminder> list = new ArrayList<>();
 
         String[] projection = {
             Entry._ID,
-            Entry.COLUMN_NAME_TITLE,
-            Entry.COLUMN_NAME_NOTES,
+            Entry.COLUMN_NAME_TEXT,
             Entry.COLUMN_NAME_CREATED,
             Entry.COLUMN_NAME_UPDATED
         };
@@ -113,20 +103,19 @@ public class Task extends AbstractModel implements Serializable {
             Entry._ID + (asc ? " ASC" : " DESC")
         );
 
-        Task task;
+        Reminder reminder;
 
         if (cursor.moveToFirst()) {
             while (cursor.isAfterLast() == false) {
-                task = new Task(
-                    getString(cursor, Entry.COLUMN_NAME_TITLE),
-                    getString(cursor, Entry.COLUMN_NAME_NOTES),
+                reminder = new Reminder(
+                    getString(cursor, Entry.COLUMN_NAME_TEXT),
                     getString(cursor, Entry.COLUMN_NAME_CREATED),
                     getString(cursor, Entry.COLUMN_NAME_UPDATED)
                 );
 
-                task.setId(getString(cursor, Entry._ID));
+                reminder.setId(getString(cursor, Entry._ID));
 
-                list.add(task);
+                list.add(reminder);
 
                 cursor.moveToNext();
             }
@@ -136,15 +125,14 @@ public class Task extends AbstractModel implements Serializable {
     }
 
     public static abstract class Entry implements BaseColumns {
-        public static final String TABLE_NAME = "tasks";
-        public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_NOTES = "notes";
+        public static final String TABLE_NAME = "reminders";
+        public static final String COLUMN_NAME_TEXT = "rtext";
         public static final String COLUMN_NAME_CREATED = "created_at";
         public static final String COLUMN_NAME_UPDATED = "updated_at";
     }
 
     public static void init(Context context) {
-        dbHelper = new Task.DbHelper(context);
+        dbHelper = new Reminder.DbHelper(context);
     }
 
     public static class DbHelper extends SQLiteOpenHelper {
@@ -156,11 +144,10 @@ public class Task extends AbstractModel implements Serializable {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(
                 "CREATE TABLE " + Entry.TABLE_NAME + "(" +
-                     Entry._ID + " INTEGER PRIMARY KEY," +
-                     Entry.COLUMN_NAME_TITLE + " TEXT," +
-                     Entry.COLUMN_NAME_NOTES + " TEXT," +
-                     Entry.COLUMN_NAME_CREATED + " TEXT," +
-                     Entry.COLUMN_NAME_UPDATED + " TEXT" +
+                    Entry._ID + " INTEGER PRIMARY KEY," +
+                    Entry.COLUMN_NAME_TEXT + " TEXT," +
+                    Entry.COLUMN_NAME_CREATED + " TEXT," +
+                    Entry.COLUMN_NAME_UPDATED + " TEXT" +
                 ")"
             );
         }

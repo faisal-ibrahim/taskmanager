@@ -24,6 +24,8 @@ import com.github.clans.fab.FloatingActionMenu;
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final int REQUEST_CREATE_TASK = 1;
+
     private FloatingActionMenu floatingMenu;
     private Menu menu;
 
@@ -80,7 +82,7 @@ public class BaseActivity extends AppCompatActivity
             floatingMenu.toggle(false);
 
             if (intent != null ) {
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, REQUEST_CREATE_TASK);
             }
         }
     };
@@ -125,7 +127,7 @@ public class BaseActivity extends AppCompatActivity
         }
 
         if (intent != null ) {
-            startActivityForResult(intent, 1);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

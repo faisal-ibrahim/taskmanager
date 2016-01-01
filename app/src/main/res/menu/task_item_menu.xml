@@ -5,7 +5,4 @@
 
     <item android:id="@+id/task_item_menu_delete"
         android:title="Delete" />
-
-    <item android:id="@+id/task_item_menu_archive"
-        android:title="Archive" />
 </menu>
