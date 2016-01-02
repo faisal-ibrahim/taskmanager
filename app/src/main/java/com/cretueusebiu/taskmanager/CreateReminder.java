@@ -21,24 +21,11 @@ public class CreateReminder extends AbstractReminderActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dateText = (TextView) findViewById(R.id.reminder_date);
-        timeText = (TextView) findViewById(R.id.reminder_time);
-        timeSwitch = (Switch) findViewById(R.id.reminder_time_toggle);
-
-        calendar = Calendar.getInstance();
-
-        updateTimeText();
-        updateDateText();
-
-        dateText.setOnClickListener(dateListener);
-        timeText.setOnClickListener(timeListener);
-        timeSwitch.setOnClickListener(switchListener);
+        initialize();
     }
 
     protected boolean save() {
-        EditText rtext = (EditText) findViewById(R.id.create_reminder_text);
-
-        String text = rtext.getText().toString().trim();
+        String text = textText.getText().toString().trim();
 
         if (text.isEmpty()) {
             return false;
@@ -46,11 +33,7 @@ public class CreateReminder extends AbstractReminderActivity {
 
         Reminder reminder = Reminder.create(text, calendar, !isTimeVisible());
 
-        Intent intent = new Intent();
-
-        intent.putExtra("reminder", reminder);
-
-        setResult(RemindersActivity.RESULT_OK, intent);
+        setResult(RemindersActivity.RESULT_OK, new Intent());
 
         return true;
     }

@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.cretueusebiu.taskmanager.models.Task;
 
-public class EditTaskActivity extends AppCompatActivity {
+public class EditTaskActivity extends AbstractTaskActivity {
 
     protected Task task;
-    protected int position;
+    protected boolean display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,8 @@ public class EditTaskActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        task = (Task) getIntent().getSerializableExtra("task");
-        position = getIntent().getIntExtra("position", -1);
+        task = (Task) getIntent().getParcelableExtra("task");
+        display = getIntent().getBooleanExtra("display", false);
 
         EditText title = (EditText) findViewById(R.id.edit_task_title);
         EditText notes = (EditText) findViewById(R.id.edit_task_notes);
@@ -35,27 +35,7 @@ public class EditTaskActivity extends AppCompatActivity {
         notes.setText(task.getNotes());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            case R.id.save:
-                if (!saveTask()) {
-                    return false;
-                }
-
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private boolean saveTask() {
+    protected boolean save() {
         EditText titleText = (EditText) findViewById(R.id.edit_task_title);
         EditText notesText = (EditText) findViewById(R.id.edit_task_notes);
 
@@ -72,15 +52,13 @@ public class EditTaskActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.putExtra("task", task);
-        intent.putExtra("position", position);
-        setResult(2, intent);
 
-        return true;
-    }
+        if (display) {
+            setResult(MainActivity.RESULT_OK, intent);
+        } else {
+            setResult(DisplayTaskActivity.RESULT_OK, intent);
+        }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.save, menu);
         return true;
     }
 }

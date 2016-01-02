@@ -57,10 +57,14 @@ abstract public class AbstractModel {
     }
 
     protected static Calendar getCalendar(Cursor cursor, String column) {
+        return stringToCalendar(getString(cursor, column));
+    }
+
+    protected static Calendar stringToCalendar(String str) {
         Calendar calendar = Calendar.getInstance();
 
         try {
-            calendar.setTime(dateFormat.parse(getString(cursor, column)));
+            calendar.setTime(dateFormat.parse(str));
         } catch (ParseException e) {
             // e.printStackTrace();
         }

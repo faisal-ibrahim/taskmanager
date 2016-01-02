@@ -11,9 +11,10 @@ import com.cretueusebiu.taskmanager.R;
 import com.cretueusebiu.taskmanager.models.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
-    public TaskAdapter(Context context, ArrayList<Task> tasks) {
+    public TaskAdapter(Context context, List<Task> tasks) {
         super(context, 0, tasks);
     }
 

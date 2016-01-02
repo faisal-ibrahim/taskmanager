@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 
 public abstract class AbstractReminderActivity extends AppCompatActivity {
 
+    protected TextView textText;
     protected TextView dateText;
     protected TextView timeText;
     protected Switch timeSwitch;
@@ -47,6 +49,22 @@ public abstract class AbstractReminderActivity extends AppCompatActivity {
     }
 
     protected abstract boolean save();
+
+    protected void initialize() {
+        textText = (EditText) findViewById(R.id.create_reminder_text);
+        dateText = (TextView) findViewById(R.id.reminder_date);
+        timeText = (TextView) findViewById(R.id.reminder_time);
+        timeSwitch = (Switch) findViewById(R.id.reminder_time_toggle);
+
+        calendar = Calendar.getInstance();
+
+        updateTimeText();
+        updateDateText();
+
+        dateText.setOnClickListener(dateListener);
+        timeText.setOnClickListener(timeListener);
+        timeSwitch.setOnClickListener(switchListener);
+    }
 
     protected View.OnClickListener dateListener = new View.OnClickListener() {
         @Override

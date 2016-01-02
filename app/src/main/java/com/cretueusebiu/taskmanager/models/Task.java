@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.util.Log;
 
@@ -13,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Task extends AbstractModel implements Serializable {
+public class Task extends AbstractModel implements Parcelable {
 
     protected String id = null;
     protected String title;
@@ -142,4 +144,37 @@ public class Task extends AbstractModel implements Serializable {
         public static final String COLUMN_NAME_CREATED = "created_at";
         public static final String COLUMN_NAME_UPDATED = "updated_at";
     }
+
+    public Task (Parcel in) {
+        String[] data = new String[5];
+        in.readStringArray(data);
+
+        id = data[0];
+        title = data[1];
+        notes = data[2];
+        created = data[3];
+        updated = data[4];
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {
+                id, title, notes,  created, updated
+        });
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 }
