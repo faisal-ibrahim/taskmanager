@@ -7,13 +7,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cretueusebiu.taskmanager.adapters.ReminderAdapter;
-import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.cretueusebiu.taskmanager.models.Reminder;
-import com.cretueusebiu.taskmanager.models.Task;
 
 import java.util.ArrayList;
 
-public class RemindersActivity extends BaseActivity {
+public class RemindersActivity extends AbstractActivity {
 
     private ReminderAdapter adapter;
     private ArrayList<Reminder> reminders;

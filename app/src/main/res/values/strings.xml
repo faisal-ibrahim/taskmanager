@@ -10,4 +10,5 @@
     <string name="title_activity_display_task">DisplayTaskActivity</string>
     <string name="title_activity_reminders">RemindersActivity</string>
     <string name="title_activity_edit_task">EditTaskActivity</string>
+    <string name="title_activity_edit_reminder">EditReminderActivity</string>
 </resources>

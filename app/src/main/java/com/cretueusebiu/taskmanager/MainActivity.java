@@ -2,7 +2,6 @@ package com.cretueusebiu.taskmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,13 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cretueusebiu.taskmanager.adapters.TaskAdapter;
-import com.cretueusebiu.taskmanager.models.AbstractModel;
-import com.cretueusebiu.taskmanager.models.Reminder;
 import com.cretueusebiu.taskmanager.models.Task;
 
 import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AbstractActivity {
 
     private static final int REQUEST_DISPLAY_TASK = 2;
     private static final int REQUEST_EDIT_TASK = 3;

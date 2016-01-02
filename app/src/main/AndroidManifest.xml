@@ -45,6 +45,11 @@
             android:label=""
             android:theme="@style/AppTheme.Create" >
         </activity>
+        <activity
+            android:name=".EditReminderActivity"
+            android:label="@string/title_activity_edit_reminder"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

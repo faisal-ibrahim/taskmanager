@@ -22,7 +22,7 @@ import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-public class BaseActivity extends AppCompatActivity
+public class AbstractActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int REQUEST_CREATE_TASK = 1;
