@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
+import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -25,6 +26,7 @@ public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int REQUEST_CREATE_TASK = 1;
+    public static final int REQUEST_CREATE_REMINDER = 4;
 
     private FloatingActionMenu floatingMenu;
     private Menu menu;
@@ -43,6 +45,8 @@ public class BaseActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         addFloatingMenu();
+
+        AbstractModel.setContext(this);
     }
 
     private void addFloatingMenu() {
@@ -73,16 +77,13 @@ public class BaseActivity extends AppCompatActivity
         public void onClick(View view) {
             Intent intent = null;
 
+            floatingMenu.toggle(false);
+
             switch (view.getId()) {
                 case R.id.create_reminder:
                     intent = new Intent(view.getContext(), CreateReminder.class);
+                    startActivityForResult(intent, REQUEST_CREATE_REMINDER);
                     break;
-            }
-
-            floatingMenu.toggle(false);
-
-            if (intent != null ) {
-                startActivityForResult(intent, REQUEST_CREATE_TASK);
             }
         }
     };

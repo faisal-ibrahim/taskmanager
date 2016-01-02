@@ -11,28 +11,44 @@ import android.provider.BaseColumns;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Reminder extends  AbstractModel implements Serializable {
 
     protected String id = null;
+    protected Calendar calendar;
+    protected boolean allDay;
     protected String text;
-    private String created = null;
-    private String updated = null;
+    protected String created = null;
+    protected String updated = null;
 
-    public Reminder(String text) {
+    public Reminder(String text, Calendar calendar, boolean allDay) {
         this.text = text;
+        this.calendar = calendar;
+        this.allDay = allDay;
     }
 
-    public Reminder(String text, String created, String updated) {
+    public Reminder(String text, Calendar calendar, boolean allDay, String created, String updated) {
         this.text = text;
+        this.calendar = calendar;
+        this.allDay = allDay;
         this.created = created;
         this.updated = updated;
     }
 
     public String getId() { return id; }
     public String getText() { return text; }
+    public Calendar getCalendar() {
+        return calendar;
+    }
+    public boolean isAllDay() {
+        return allDay;
+    }
     public String getUpdated() { return updated; }
+    public String getCalendarString() {
+       return dateFormat.format(calendar.getTime());
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -48,6 +64,8 @@ public class Reminder extends  AbstractModel implements Serializable {
     public void save() {
         ContentValues values = new ContentValues();
         values.put(Entry.COLUMN_NAME_TEXT, this.getText());
+        values.put(Entry.COLUMN_NAME_DATE, this.getCalendarString());
+        values.put(Entry.COLUMN_NAME_ALLDAY, this.isAllDay() ? 1 : 0);
 
         SimpleDateFormat ft = new SimpleDateFormat("MMMM d y, H:m");
         String now = ft.format(new Date());
@@ -74,11 +92,10 @@ public class Reminder extends  AbstractModel implements Serializable {
     /**
      * Create a new reminder.
      *
-     * @param text
      * @return Reminder
      */
-    public static Reminder create(String text) {
-        Reminder reminder = new Reminder(text);
+    public static Reminder create(String text, Calendar calendar, boolean allDay) {
+        Reminder reminder = new Reminder(text, calendar, allDay);
         reminder.save();
         return reminder;
     }
@@ -89,6 +106,8 @@ public class Reminder extends  AbstractModel implements Serializable {
         String[] projection = {
             Entry._ID,
             Entry.COLUMN_NAME_TEXT,
+            Entry.COLUMN_NAME_DATE,
+            Entry.COLUMN_NAME_ALLDAY,
             Entry.COLUMN_NAME_CREATED,
             Entry.COLUMN_NAME_UPDATED
         };
@@ -109,6 +128,8 @@ public class Reminder extends  AbstractModel implements Serializable {
             while (cursor.isAfterLast() == false) {
                 reminder = new Reminder(
                     getString(cursor, Entry.COLUMN_NAME_TEXT),
+                    getCalendar(cursor, Entry.COLUMN_NAME_DATE),
+                    getBoolean(cursor, Entry.COLUMN_NAME_ALLDAY),
                     getString(cursor, Entry.COLUMN_NAME_CREATED),
                     getString(cursor, Entry.COLUMN_NAME_UPDATED)
                 );
@@ -124,38 +145,13 @@ public class Reminder extends  AbstractModel implements Serializable {
         return list;
     }
 
+
     public static abstract class Entry implements BaseColumns {
         public static final String TABLE_NAME = "reminders";
         public static final String COLUMN_NAME_TEXT = "rtext";
+        public static final String COLUMN_NAME_DATE = "rdate";
+        public static final String COLUMN_NAME_ALLDAY = "allday";
         public static final String COLUMN_NAME_CREATED = "created_at";
         public static final String COLUMN_NAME_UPDATED = "updated_at";
-    }
-
-    public static void init(Context context) {
-        dbHelper = new Reminder.DbHelper(context);
-    }
-
-    public static class DbHelper extends SQLiteOpenHelper {
-        public DbHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(
-                "CREATE TABLE " + Entry.TABLE_NAME + "(" +
-                    Entry._ID + " INTEGER PRIMARY KEY," +
-                    Entry.COLUMN_NAME_TEXT + " TEXT," +
-                    Entry.COLUMN_NAME_CREATED + " TEXT," +
-                    Entry.COLUMN_NAME_UPDATED + " TEXT" +
-                ")"
-            );
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + Entry.TABLE_NAME);
-            onCreate(db);
-        }
     }
 }

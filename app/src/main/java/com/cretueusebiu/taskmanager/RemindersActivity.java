@@ -7,7 +7,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cretueusebiu.taskmanager.adapters.ReminderAdapter;
+import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.cretueusebiu.taskmanager.models.Reminder;
+import com.cretueusebiu.taskmanager.models.Task;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,6 @@ public class RemindersActivity extends BaseActivity {
         setContentView(R.layout.activity_reminders);
 
         initialize();
-
-        Reminder.init(this);
 
         reminders = Reminder.all(false);
 
@@ -46,4 +46,15 @@ public class RemindersActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CREATE_REMINDER:
+                if (resultCode == RemindersActivity.RESULT_OK){
+                    adapter.insert((Reminder) data.getSerializableExtra("reminder"), 0);
+                }
+                break;
+        }
+
+    }
 }

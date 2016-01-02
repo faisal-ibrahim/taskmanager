@@ -142,33 +142,4 @@ public class Task extends AbstractModel implements Serializable {
         public static final String COLUMN_NAME_CREATED = "created_at";
         public static final String COLUMN_NAME_UPDATED = "updated_at";
     }
-
-    public static void init(Context context) {
-        dbHelper = new Task.DbHelper(context);
-    }
-
-    public static class DbHelper extends SQLiteOpenHelper {
-        public DbHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(
-                "CREATE TABLE " + Entry.TABLE_NAME + "(" +
-                     Entry._ID + " INTEGER PRIMARY KEY," +
-                     Entry.COLUMN_NAME_TITLE + " TEXT," +
-                     Entry.COLUMN_NAME_NOTES + " TEXT," +
-                     Entry.COLUMN_NAME_CREATED + " TEXT," +
-                     Entry.COLUMN_NAME_UPDATED + " TEXT" +
-                ")"
-            );
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + Entry.TABLE_NAME);
-            onCreate(db);
-        }
-    }
 }

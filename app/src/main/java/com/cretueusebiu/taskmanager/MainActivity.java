@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cretueusebiu.taskmanager.adapters.TaskAdapter;
+import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.cretueusebiu.taskmanager.models.Reminder;
 import com.cretueusebiu.taskmanager.models.Task;
 
@@ -30,7 +31,7 @@ public class MainActivity extends BaseActivity {
 
         initialize();
 
-        Task.init(this);
+        tasks = Task.all(false);
 
         adapter = new TaskAdapter(this, tasks);
 
