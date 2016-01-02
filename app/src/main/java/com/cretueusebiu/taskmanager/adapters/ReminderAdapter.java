@@ -35,11 +35,11 @@ public class ReminderAdapter extends ArrayAdapter<Reminder> {
                                         .inflate(R.layout.reminder_item, parent, false);
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.reminder_text);
-        TextView timeView = (TextView) convertView.findViewById(R.id.reminder_time);
-        TextView dayView = (TextView) convertView.findViewById(R.id.reminder_day);
-        TextView monthView = (TextView) convertView.findViewById(R.id.reminder_month);
-        TextView yearView = (TextView) convertView.findViewById(R.id.reminder_year);
+        TextView textView = (TextView) convertView.findViewById(R.id.reminder_item_text);
+        TextView timeView = (TextView) convertView.findViewById(R.id.reminder_item_time);
+        TextView dayView = (TextView) convertView.findViewById(R.id.reminder_item_day);
+        TextView monthView = (TextView) convertView.findViewById(R.id.reminder_item_month);
+        TextView yearView = (TextView) convertView.findViewById(R.id.reminder_item_year);
 
         textView.setText(getText());
         dayView.setText(getDay());

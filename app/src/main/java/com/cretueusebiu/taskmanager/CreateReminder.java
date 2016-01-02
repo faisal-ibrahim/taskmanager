@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,7 +85,7 @@ public class CreateReminder extends AppCompatActivity {
             return false;
         }
 
-        Reminder reminder = Reminder.create(rtext, calendar, isTimeVisible());
+        Reminder reminder = Reminder.create(rtext, calendar, !isTimeVisible());
 
         Intent intent = new Intent();
 
