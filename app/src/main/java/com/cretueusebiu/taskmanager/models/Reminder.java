@@ -22,20 +22,23 @@ public class Reminder extends  AbstractModel implements Parcelable {
     protected String id = null;
     protected Calendar calendar;
     protected boolean allDay;
+    protected int repeat;
     protected String text;
     protected String created = null;
     protected String updated = null;
 
-    public Reminder(String text, Calendar calendar, boolean allDay) {
+    public Reminder(String text, Calendar calendar, boolean allDay, int repeat) {
         this.text = text;
         this.calendar = calendar;
         this.allDay = allDay;
+        this.repeat = repeat;
     }
 
-    public Reminder(String text, Calendar calendar, boolean allDay, String created, String updated) {
+    public Reminder(String text, Calendar calendar, boolean allDay, int repeat, String created, String updated) {
         this.text = text;
         this.calendar = calendar;
         this.allDay = allDay;
+        this.repeat = repeat;
         this.created = created;
         this.updated = updated;
     }
@@ -52,12 +55,16 @@ public class Reminder extends  AbstractModel implements Parcelable {
     public String getCalendarString() {
        return dateFormat.format(calendar.getTime());
     }
+    public int getRepeat() { return repeat; }
 
     public void setId(String id) {
         this.id = id;
     }
     public void setText(String text) {
         this.text = text;
+    }
+    public void setRepeat(int repeat) {
+        this.repeat = repeat;
     }
 
     /**
@@ -69,6 +76,7 @@ public class Reminder extends  AbstractModel implements Parcelable {
         values.put(Entry.COLUMN_NAME_TEXT, this.getText());
         values.put(Entry.COLUMN_NAME_DATE, this.getCalendarString());
         values.put(Entry.COLUMN_NAME_ALLDAY, this.isAllDay() ? 1 : 0);
+        values.put(Entry.COLUMN_NAME_REPEAT, this.getRepeat());
 
         SimpleDateFormat ft = new SimpleDateFormat("MMMM d y, H:m");
         String now = ft.format(new Date());
@@ -97,8 +105,8 @@ public class Reminder extends  AbstractModel implements Parcelable {
      *
      * @return Reminder
      */
-    public static Reminder create(String text, Calendar calendar, boolean allDay) {
-        Reminder reminder = new Reminder(text, calendar, allDay);
+    public static Reminder create(String text, Calendar calendar, boolean allDay, int repeat) {
+        Reminder reminder = new Reminder(text, calendar, allDay, repeat);
         reminder.save();
         return reminder;
     }
@@ -111,6 +119,7 @@ public class Reminder extends  AbstractModel implements Parcelable {
             Entry.COLUMN_NAME_TEXT,
             Entry.COLUMN_NAME_DATE,
             Entry.COLUMN_NAME_ALLDAY,
+            Entry.COLUMN_NAME_REPEAT,
             Entry.COLUMN_NAME_CREATED,
             Entry.COLUMN_NAME_UPDATED
         };
@@ -133,6 +142,7 @@ public class Reminder extends  AbstractModel implements Parcelable {
                     getString(cursor, Entry.COLUMN_NAME_TEXT),
                     getCalendar(cursor, Entry.COLUMN_NAME_DATE),
                     getBoolean(cursor, Entry.COLUMN_NAME_ALLDAY),
+                    getInt(cursor, Entry.COLUMN_NAME_REPEAT),
                     getString(cursor, Entry.COLUMN_NAME_CREATED),
                     getString(cursor, Entry.COLUMN_NAME_UPDATED)
                 );
@@ -161,20 +171,22 @@ public class Reminder extends  AbstractModel implements Parcelable {
         public static final String COLUMN_NAME_TEXT = "rtext";
         public static final String COLUMN_NAME_DATE = "rdate";
         public static final String COLUMN_NAME_ALLDAY = "allday";
+        public static final String COLUMN_NAME_REPEAT = "repeat";
         public static final String COLUMN_NAME_CREATED = "created_at";
         public static final String COLUMN_NAME_UPDATED = "updated_at";
     }
 
     public Reminder (Parcel in) {
-        String[] data = new String[6];
+        String[] data = new String[7];
         in.readStringArray(data);
 
         id = data[0];
         text = data[1];
         calendar = stringToCalendar(data[2]);
         allDay = data[3].equals("1");
-        created = data[4];
-        updated = data[5];
+        repeat = Integer.parseInt(data[4]);
+        created = data[5];
+        updated = data[6];
     }
 
     @Override
@@ -185,7 +197,8 @@ public class Reminder extends  AbstractModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[] {
-                id, text, getCalendarString(), isAllDay() ? "1" : "0", created, updated
+                id, text, getCalendarString(), isAllDay() ? "1" : "0",
+                Integer.toString(repeat), created, updated
         });
     }
 

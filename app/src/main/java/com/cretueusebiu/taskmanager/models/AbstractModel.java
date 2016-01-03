@@ -44,12 +44,16 @@ abstract public class AbstractModel {
         return _delete(table, "_id = ?", whereArgs);
     }
 
+    protected static int getInt(Cursor cursor, String column) {
+        return cursor.getInt(cursor.getColumnIndex(column));
+    }
+
     protected static String getString(Cursor cursor, String column) {
         return cursor.getString(cursor.getColumnIndex(column));
     }
 
     protected static boolean getBoolean(Cursor cursor, String column) {
-        return cursor.getInt(cursor.getColumnIndex(column)) == 1;
+        return getInt(cursor, column) == 1;
     }
 
     protected static long getLong(Cursor cursor, String column) {

@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/reminder_time_toggle"
-            android:checked="false"
+            android:checked="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -89,6 +89,27 @@
             android:layout_alignBottom="@+id/reminder_date"
             android:layout_alignRight="@+id/reminder_time_toggle"
             android:layout_alignEnd="@+id/reminder_time_toggle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:background="@drawable/ic_refresh"
+            android:backgroundTint="#6c6c6c"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/reminder_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Does not repeat"
+            android:id="@+id/reminder_repeat"
+            android:layout_alignBaseline="@+id/textView3"
+            android:layout_alignBottom="@+id/textView3"
+            android:layout_alignLeft="@+id/reminder_date"
+            android:layout_alignStart="@+id/reminder_date" />
 
     </RelativeLayout>
 </LinearLayout>
