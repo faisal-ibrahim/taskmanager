@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -28,9 +29,20 @@ public class EditReminderActivity extends AbstractReminderActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        reminder = (Reminder) getIntent().getParcelableExtra("reminder");
+
+        calendar = reminder.getCalendar();
+
         initialize();
 
-        reminder = (Reminder) getIntent().getParcelableExtra("reminder");
+        textText.setText(reminder.getText());
+        if (!reminder.isAllDay()) {
+            timeText.setVisibility(View.VISIBLE);
+            timeSwitch.toggle();
+        }
+
+        updateDateText();
+        updateTimeText();
     }
 
     @Override
@@ -38,9 +50,10 @@ public class EditReminderActivity extends AbstractReminderActivity {
         String text = textText.getText().toString().trim();
 
         if (text.isEmpty()) {
-            reminder.setText(text);
+            return false;
         }
 
+        reminder.setText(text);
         reminder.setCalendar(calendar);
         reminder.setAllDay(!isTimeVisible());
         reminder.save();

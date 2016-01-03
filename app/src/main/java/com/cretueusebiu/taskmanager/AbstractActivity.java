@@ -45,6 +45,7 @@ public class AbstractActivity extends AppCompatActivity
     protected MenuItem searchMenuItem;
     protected boolean searchOpened = false;
     protected String searchQuery = "";
+    protected boolean floatingMenuEnabled = true;
 
     protected void initialize() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +60,9 @@ public class AbstractActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        addFloatingMenu();
+        if (floatingMenuEnabled) {
+            addFloatingMenu();
+        }
 
         AbstractModel.setContext(this);
 
@@ -146,9 +149,13 @@ public class AbstractActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        if (floatingMenuEnabled) {
+            this.menu = menu;
+            getMenuInflater().inflate(R.menu.main, menu);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -191,6 +198,10 @@ public class AbstractActivity extends AppCompatActivity
             case R.id.nav_reminders:
                 intent = new Intent(this, RemindersActivity.class);
                 break;
+
+            case R.id.nav_backup:
+                intent = new Intent(this, BackupActivity.class);
+                break;
         }
 
         if (intent != null ) {
@@ -216,7 +227,6 @@ public class AbstractActivity extends AppCompatActivity
         searchOpened = savedInstanceState.getBoolean(SEARCH_OPENED);
         searchQuery = savedInstanceState.getString(SEARCH_QUERY);
     }
-
 
     protected TextWatcher searchWatcher =  new TextWatcher() {
         @Override

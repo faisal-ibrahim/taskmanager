@@ -2,6 +2,8 @@ package com.cretueusebiu.taskmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 public class RemindersActivity extends AbstractActivity {
 
     private static final String REMINDERS_FILTERED = "reminders_filtered";
+    private static final int REQUEST_EDIT_REMINDER = 2;
     private ReminderAdapter adapter;
     private ArrayList<Reminder> reminders;
     private ArrayList<Reminder> remindersFiltered;
@@ -62,6 +65,13 @@ public class RemindersActivity extends AbstractActivity {
                     onSearchTextChanged("");
                 }
                 break;
+
+            case REQUEST_EDIT_REMINDER:
+                if (resultCode == RemindersActivity.RESULT_OK) {
+                    replaceReminder((Reminder) data.getParcelableExtra("reminder"));
+                    onSearchTextChanged(searchQuery);
+                }
+                break;
         }
     }
 
@@ -94,5 +104,57 @@ public class RemindersActivity extends AbstractActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(REMINDERS_FILTERED, (ArrayList<Reminder>) remindersFiltered);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Reminder reminder = adapter.getItem((int) info.id);
+
+        switch (item.getItemId()) {
+            case R.id.reminder_item_menu_delete:
+                reminder.delete();
+                removeReminder(reminder);
+                onSearchTextChanged(searchQuery);
+                return true;
+
+            case R.id.reminder_item_menu_edit:
+                Intent intent = new Intent(this, EditReminderActivity.class);
+                intent.putExtra("reminder", reminder);
+                startActivityForResult(intent, REQUEST_EDIT_REMINDER);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.reminder_item_menu, menu);
+    }
+
+    protected void removeReminder(Reminder reminder) {
+        int pos = getReminderPos(reminder);
+        if (pos > -1) {
+            reminders.remove(pos);
+        }
+    }
+
+    protected void replaceReminder(Reminder reminder) {
+        int pos = getReminderPos(reminder);
+        if (pos > -1) {
+            reminders.set(pos, reminder);
+        }
+    }
+
+    protected int getReminderPos(Reminder reminder) {
+        for (int i = 0; i < reminders.size(); i++) {
+            if (reminders.get(i).getId().equals(reminder.getId())) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

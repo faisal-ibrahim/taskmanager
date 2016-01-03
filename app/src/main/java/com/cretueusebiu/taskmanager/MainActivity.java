@@ -75,8 +75,7 @@ public class MainActivity extends AbstractActivity {
 
             case REQUEST_EDIT_TASK:
                 if (resultCode == MainActivity.RESULT_OK) {
-                    Task task = (Task) data.getParcelableExtra("task");
-                    replaceTask(task);
+                    replaceTask((Task) data.getParcelableExtra("task"));
                     onSearchTextChanged(searchQuery);
                 }
                 break;
@@ -86,18 +85,16 @@ public class MainActivity extends AbstractActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Task task = null;
+        Task task = adapter.getItem((int) info.id);
 
         switch (item.getItemId()) {
             case R.id.task_item_menu_delete:
-                task = adapter.getItem((int) info.id);
                 task.delete();
                 removeTask(task);
                 onSearchTextChanged(searchQuery);
                 return true;
 
             case R.id.task_item_menu_edit:
-                task = adapter.getItem((int) info.id);
                 Intent intent = new Intent(this, EditTaskActivity.class);
                 intent.putExtra("task", task);
                 startActivityForResult(intent, REQUEST_EDIT_TASK);

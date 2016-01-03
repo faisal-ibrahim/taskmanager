@@ -56,8 +56,6 @@ public abstract class AbstractReminderActivity extends AppCompatActivity {
         timeText = (TextView) findViewById(R.id.reminder_time);
         timeSwitch = (Switch) findViewById(R.id.reminder_time_toggle);
 
-        calendar = Calendar.getInstance();
-
         updateTimeText();
         updateDateText();
 
@@ -69,10 +67,9 @@ public abstract class AbstractReminderActivity extends AppCompatActivity {
     protected View.OnClickListener dateListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Calendar cal = Calendar.getInstance();
-            int y = cal.get(Calendar.YEAR);
-            int m = cal.get(Calendar.MONTH);
-            int d = cal.get(Calendar.DAY_OF_MONTH);
+            int y = calendar.get(Calendar.YEAR);
+            int m = calendar.get(Calendar.MONTH);
+            int d = calendar.get(Calendar.DAY_OF_MONTH);
             new DatePickerDialog(AbstractReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int y, int m, int d) {

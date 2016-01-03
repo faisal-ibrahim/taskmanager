@@ -50,6 +50,7 @@ public class ReminderAdapter extends ArrayAdapter<Reminder> {
             timeView.setVisibility(View.GONE);
         } else {
             timeView.setText(getTime());
+            timeView.setVisibility(View.VISIBLE);
         }
 
         return convertView;
@@ -64,7 +65,7 @@ public class ReminderAdapter extends ArrayAdapter<Reminder> {
     }
 
     private String getTime() {
-        return reminder.getCalendar().get(Calendar.HOUR) + ":" +
+        return reminder.getCalendar().get(Calendar.HOUR_OF_DAY) + ":" +
                 reminder.getCalendar().get(Calendar.MINUTE);
     }
 

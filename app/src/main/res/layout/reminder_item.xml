@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Reminder text"
         android:textColor="#3b3b3b"
+        android:paddingRight="20dp"
         android:id="@+id/reminder_item_text" />
 
     <TextView

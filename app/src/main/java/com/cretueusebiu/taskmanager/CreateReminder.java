@@ -21,6 +21,8 @@ public class CreateReminder extends AbstractReminderActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        calendar = Calendar.getInstance();
+
         initialize();
     }
 

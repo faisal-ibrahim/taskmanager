@@ -45,7 +45,12 @@
         </activity>
         <activity
             android:name=".EditReminderActivity"
-            android:label="@string/title_activity_edit_reminder"
+            android:label=""
+            android:theme="@style/AppTheme.Create" >
+        </activity>
+        <activity
+            android:name=".BackupActivity"
+            android:label="Backup"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
