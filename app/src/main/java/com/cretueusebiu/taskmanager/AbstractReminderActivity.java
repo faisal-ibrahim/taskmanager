@@ -28,8 +28,8 @@ public abstract class AbstractReminderActivity extends AppCompatActivity {
     protected TextView repeatText;
     protected AlertDialog.Builder repeatDialog;
     protected int checkedRepeatItem = 0;
-    protected String repeatItems[] = {"Does not repeat", "Every day",
-            "Every week", "Every month", "Every year"};
+    protected String repeatItems[] = {"Does not repeat", "Every minute", "Every hour",
+            "Every day", "Every week", "Every month", "Every year"};
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

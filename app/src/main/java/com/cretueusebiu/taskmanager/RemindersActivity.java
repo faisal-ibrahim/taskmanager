@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cretueusebiu.taskmanager.adapters.ReminderAdapter;
+import com.cretueusebiu.taskmanager.alarm.ReminderManager;
 import com.cretueusebiu.taskmanager.models.Reminder;
 import com.cretueusebiu.taskmanager.models.Task;
 
@@ -18,6 +19,7 @@ public class RemindersActivity extends AbstractActivity {
 
     private static final String REMINDERS_FILTERED = "reminders_filtered";
     private static final int REQUEST_EDIT_REMINDER = 2;
+    private static final int REQUEST_DISPLAY_REMINDER = 6;
     private ReminderAdapter adapter;
     private ArrayList<Reminder> reminders;
     private ArrayList<Reminder> remindersFiltered;
@@ -43,18 +45,17 @@ public class RemindersActivity extends AbstractActivity {
         listView.setAdapter(adapter);
 
         registerForContextMenu(listView);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Task task = tasks.get(position);
-//                Intent intent = new Intent(adapterView.getContext(), DisplayTaskActivity.class);
-//                intent.putExtra("task", task);
-//                intent.putExtra("position", position);
-//                startActivityForResult(intent, REQUEST_DISPLAY_TASK);
-            }
-        });
+        listView.setOnItemClickListener(listViewListener);
     }
+
+    protected AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            Intent intent = new Intent(adapterView.getContext(), DisplayReminderActivity.class);
+            intent.putExtra("reminder", remindersFiltered.get(position));
+            startActivityForResult(intent, REQUEST_DISPLAY_REMINDER);
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,6 +116,7 @@ public class RemindersActivity extends AbstractActivity {
             case R.id.reminder_item_menu_delete:
                 reminder.delete();
                 removeReminder(reminder);
+                new ReminderManager(this).cancel(reminder);
                 onSearchTextChanged(searchQuery);
                 return true;
 

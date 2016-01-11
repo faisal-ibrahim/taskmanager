@@ -27,6 +27,14 @@ public class Reminder extends  AbstractModel implements Parcelable {
     protected String created = null;
     protected String updated = null;
 
+    public static final int DOES_NOT_REPEAT = 0;
+    public static final int REPEAT_MINUTE = 1;
+    public static final int REPEAT_HOUR = 2;
+    public static final int REPEAT_DAY = 3;
+    public static final int REPEAT_WEEK = 4;
+    public static final int REPEAT_MONTH = 5;
+    public static final int REPEAT_YEAR = 6;
+
     public Reminder(String text, Calendar calendar, boolean allDay, int repeat) {
         this.text = text;
         this.calendar = calendar;
@@ -111,10 +119,57 @@ public class Reminder extends  AbstractModel implements Parcelable {
         return reminder;
     }
 
+    public static Reminder find(String id) {
+        String[] columns = {
+                Entry._ID,
+                Entry.COLUMN_NAME_TEXT,
+                Entry.COLUMN_NAME_DATE,
+                Entry.COLUMN_NAME_ALLDAY,
+                Entry.COLUMN_NAME_REPEAT,
+                Entry.COLUMN_NAME_CREATED,
+                Entry.COLUMN_NAME_UPDATED
+        };
+
+        String [] selectionArgs = { id };
+
+        Cursor cursor = dbHelper.getReadableDatabase().query(
+                Entry.TABLE_NAME,
+                columns,
+                Entry._ID + "= ?",
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        Reminder reminder;
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                reminder = new Reminder(
+                        getString(cursor, Entry.COLUMN_NAME_TEXT),
+                        getCalendar(cursor, Entry.COLUMN_NAME_DATE),
+                        getBoolean(cursor, Entry.COLUMN_NAME_ALLDAY),
+                        getInt(cursor, Entry.COLUMN_NAME_REPEAT),
+                        getString(cursor, Entry.COLUMN_NAME_CREATED),
+                        getString(cursor, Entry.COLUMN_NAME_UPDATED)
+                );
+
+                reminder.setId(getString(cursor, Entry._ID));
+
+                cursor.moveToNext();
+
+                return reminder;
+            }
+        }
+
+        return null;
+    }
+
     public static ArrayList<Reminder> all() {
         ArrayList<Reminder> list = new ArrayList<>();
 
-        String[] projection = {
+        String[] columns = {
             Entry._ID,
             Entry.COLUMN_NAME_TEXT,
             Entry.COLUMN_NAME_DATE,
@@ -126,7 +181,7 @@ public class Reminder extends  AbstractModel implements Parcelable {
 
         Cursor cursor = dbHelper.getReadableDatabase().query(
             Entry.TABLE_NAME,
-            projection,
+            columns,
             null,
             null,
             null,
