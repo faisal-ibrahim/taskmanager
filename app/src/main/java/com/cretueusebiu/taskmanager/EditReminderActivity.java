@@ -41,6 +41,8 @@ public class EditReminderActivity extends AbstractReminderActivity {
             timeSwitch.toggle();
         }
 
+        repeatText.setText(getRepeatItem(reminder.getRepeat()));
+
         updateDateText();
         updateTimeText();
     }
@@ -56,6 +58,7 @@ public class EditReminderActivity extends AbstractReminderActivity {
         reminder.setText(text);
         reminder.setCalendar(calendar);
         reminder.setAllDay(!isTimeVisible());
+        reminder.setRepeat(checkedRepeatItem);
         reminder.save();
 
         Intent intent = new Intent();

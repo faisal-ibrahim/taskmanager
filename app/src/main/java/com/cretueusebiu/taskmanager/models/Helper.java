@@ -31,6 +31,7 @@ public class Helper extends SQLiteOpenHelper {
                 Reminder.Entry.COLUMN_NAME_TEXT + " TEXT," +
                 Reminder.Entry.COLUMN_NAME_DATE + " TEXT," +
                 Reminder.Entry.COLUMN_NAME_ALLDAY + " INTEGER(1)," +
+                Reminder.Entry.COLUMN_NAME_REPEAT + " INTEGER(1)," +
                 Reminder.Entry.COLUMN_NAME_CREATED + " TEXT," +
                 Reminder.Entry.COLUMN_NAME_UPDATED + " TEXT" +
             ")"
