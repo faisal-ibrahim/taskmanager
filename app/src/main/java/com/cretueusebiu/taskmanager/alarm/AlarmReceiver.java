@@ -13,7 +13,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cretueusebiu.taskmanager.DisplayReminderActivity;
 import com.cretueusebiu.taskmanager.R;
+import com.cretueusebiu.taskmanager.RemindersActivity;
 import com.cretueusebiu.taskmanager.models.Reminder;
 
 import java.util.Calendar;
@@ -34,21 +36,25 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Reminder reminder = Reminder.find(id);
 
+        Intent dIntent = new Intent(context, RemindersActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, dIntent, 0);
+
         NotificationCompat.Builder notification =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_access_time)
                         .setContentTitle("Reminder")
-                        .setContentText(reminder.getText());
+                        .setContentText(reminder.getText())
+                        .setContentIntent(contentIntent);
+
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(1, notification.build());
 
 //        Intent i = new Intent();
 //        i.setAction("DONE");
 //        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 //        notification.addAction(R.drawable.ic_clear, "Done", pi);
-
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(NOTIFICATION_ID, notification.build());
 
         playSound(context);
 

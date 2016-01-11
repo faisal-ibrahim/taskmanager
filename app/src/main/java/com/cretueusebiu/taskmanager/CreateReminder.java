@@ -27,6 +27,7 @@ public class CreateReminder extends AbstractReminderActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1);
 
         initialize();
     }

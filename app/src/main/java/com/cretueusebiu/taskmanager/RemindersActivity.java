@@ -1,7 +1,12 @@
 package com.cretueusebiu.taskmanager;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,8 +56,9 @@ public class RemindersActivity extends AbstractActivity {
     protected AdapterView.OnItemClickListener listViewListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//            Reminder reminder = remindersFiltered.get(position);
             Intent intent = new Intent(adapterView.getContext(), DisplayReminderActivity.class);
-            intent.putExtra("reminder", remindersFiltered.get(position));
+            intent.putExtra("reminder_id", remindersFiltered.get(position).getId());
             startActivityForResult(intent, REQUEST_DISPLAY_REMINDER);
         }
     };
@@ -60,6 +66,18 @@ public class RemindersActivity extends AbstractActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
+            case REQUEST_DISPLAY_REMINDER:
+                if (resultCode == RemindersActivity.RESULT_OK){
+                    Reminder reminder = (Reminder) data.getParcelableExtra("reminder");
+                    removeReminder(reminder);
+                    onSearchTextChanged(searchQuery);
+                } else if (resultCode == 2) {
+                    Reminder reminder = (Reminder) data.getParcelableExtra("reminder");
+                    replaceReminder(reminder);
+                    onSearchTextChanged(searchQuery);
+                }
+                break;
+
             case REQUEST_CREATE_REMINDER:
                 if (resultCode == RemindersActivity.RESULT_OK) {
                     reminders = Reminder.all();
