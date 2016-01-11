@@ -13,4 +13,5 @@
     <string name="title_activity_edit_reminder">EditReminderActivity</string>
     <string name="title_activity_backup">BackupActivity</string>
     <string name="title_activity_display_reminder">DisplayReminderActivity</string>
+    <string name="title_activity_calendar">Calendar</string>
 </resources>

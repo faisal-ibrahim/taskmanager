@@ -37,7 +37,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         Reminder reminder = Reminder.find(id);
 
         Intent dIntent = new Intent(context, RemindersActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, dIntent, 0);
+        PendingIntent contentIntent =
+                PendingIntent.getActivity(context, Integer.parseInt(id), dIntent, 0);
 
         NotificationCompat.Builder notification =
                 new NotificationCompat.Builder(context)

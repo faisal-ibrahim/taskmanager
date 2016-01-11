@@ -195,6 +195,10 @@ public class AbstractActivity extends AppCompatActivity
                 intent = new Intent(this, MainActivity.class);
                 break;
 
+            case R.id.nav_calendar:
+                intent = new Intent(this, CalendarActivity.class);
+                break;
+
             case R.id.nav_reminders:
                 intent = new Intent(this, RemindersActivity.class);
                 break;

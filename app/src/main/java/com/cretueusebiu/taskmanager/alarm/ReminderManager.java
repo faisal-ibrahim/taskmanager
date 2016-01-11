@@ -52,6 +52,7 @@ public class ReminderManager {
     private PendingIntent getIntent(Reminder reminder) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("reminder_id", reminder.getId());
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int id = Integer.parseInt(reminder.getId());
+        return PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

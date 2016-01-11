@@ -20,14 +20,6 @@
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_fab_label="Task" >
 
-        <!--<com.github.clans.fab.FloatingActionButton-->
-            <!--android:id="@+id/create_task"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--fab:fab_size="mini"-->
-            <!--android:src="@drawable/ic_action_list"-->
-            <!--fab:fab_label="Task" />-->
-
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/create_reminder"
             android:layout_width="wrap_content"
