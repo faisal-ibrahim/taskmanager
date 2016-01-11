@@ -122,7 +122,7 @@ public abstract class AbstractReminderActivity extends AppCompatActivity {
             new TimePickerDialog(AbstractReminderActivity.this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int h, int m) {
-                    calendar.set(Calendar.HOUR, h);
+                    calendar.set(Calendar.HOUR_OF_DAY, h);
                     calendar.set(Calendar.MINUTE, m);
                     updateTimeText();
                 }
