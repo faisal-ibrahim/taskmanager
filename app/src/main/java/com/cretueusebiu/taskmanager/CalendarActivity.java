@@ -3,6 +3,7 @@ package com.cretueusebiu.taskmanager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.cretueusebiu.taskmanager.calendar.DatesDecorator;
 import com.cretueusebiu.taskmanager.models.Reminder;
@@ -17,8 +18,6 @@ import java.util.Map;
 
 public class CalendarActivity extends AbstractActivity {
 
-    private MaterialCalendarView calendarView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +27,16 @@ public class CalendarActivity extends AbstractActivity {
 
         initialize();
 
-        calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        initCalendar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    private void initCalendar() {
+        MaterialCalendarView calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
 
         ArrayList<Reminder> reminders = Reminder.all();
 
@@ -66,7 +74,7 @@ public class CalendarActivity extends AbstractActivity {
         }
     }
 
-    protected ArrayList<DayViewDecorator> getDecorators(int num, CalendarDay day) {
+    private ArrayList<DayViewDecorator> getDecorators(int num, CalendarDay day) {
         ArrayList<DayViewDecorator> decorators = new ArrayList<DayViewDecorator>();
         ArrayList<CalendarDay> dates = new ArrayList<CalendarDay>();
         dates.add(day);
