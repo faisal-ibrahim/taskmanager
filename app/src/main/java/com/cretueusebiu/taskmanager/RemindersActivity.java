@@ -28,6 +28,7 @@ public class RemindersActivity extends AbstractActivity {
     private ReminderAdapter adapter;
     private ArrayList<Reminder> reminders;
     private ArrayList<Reminder> remindersFiltered;
+    private ReminderManager reminderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,8 @@ public class RemindersActivity extends AbstractActivity {
         initialize();
 
         reminders = Reminder.all();
+
+        reminderManager = new ReminderManager(this);
 
         if (savedInstanceState == null || !isSearchOpened()) {
             remindersFiltered = new ArrayList<Reminder>(reminders);
@@ -70,6 +73,7 @@ public class RemindersActivity extends AbstractActivity {
                 if (resultCode == RemindersActivity.RESULT_OK){
                     Reminder reminder = (Reminder) data.getParcelableExtra("reminder");
                     removeReminder(reminder);
+                    reminderManager.cancel(reminder);
                     onSearchTextChanged(searchQuery);
                 } else if (resultCode == 2) {
                     Reminder reminder = (Reminder) data.getParcelableExtra("reminder");
@@ -87,7 +91,9 @@ public class RemindersActivity extends AbstractActivity {
 
             case REQUEST_EDIT_REMINDER:
                 if (resultCode == RemindersActivity.RESULT_OK) {
-                    replaceReminder((Reminder) data.getParcelableExtra("reminder"));
+                    Reminder reminder = (Reminder) data.getParcelableExtra("reminder");
+                    replaceReminder(reminder);
+                    reminderManager.set(reminder);
                     onSearchTextChanged(searchQuery);
                 }
                 break;
@@ -134,7 +140,7 @@ public class RemindersActivity extends AbstractActivity {
             case R.id.reminder_item_menu_delete:
                 reminder.delete();
                 removeReminder(reminder);
-                new ReminderManager(this).cancel(reminder);
+                reminderManager.cancel(reminder);
                 onSearchTextChanged(searchQuery);
                 return true;
 
