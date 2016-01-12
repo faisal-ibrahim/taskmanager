@@ -39,7 +39,8 @@ public class MyDotSpan implements LineBackgroundSpan {
         if (total == 1) {
             cx = cx / 2;
         } else {
-            cx = (cx / total) + ((index + 1) * 12);
+            int x = total * 14;
+            cx = (cx - x) / 2 + (index + 1) * 14;
         }
 
         canvas.drawCircle(cx, bottom + radius, radius, paint);
