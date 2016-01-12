@@ -120,21 +120,11 @@ public class Reminder extends  AbstractModel implements Parcelable {
     }
 
     public static Reminder find(String id) {
-        String[] columns = {
-                Entry._ID,
-                Entry.COLUMN_NAME_TEXT,
-                Entry.COLUMN_NAME_DATE,
-                Entry.COLUMN_NAME_ALLDAY,
-                Entry.COLUMN_NAME_REPEAT,
-                Entry.COLUMN_NAME_CREATED,
-                Entry.COLUMN_NAME_UPDATED
-        };
-
         String [] selectionArgs = { id };
 
         Cursor cursor = dbHelper.getReadableDatabase().query(
                 Entry.TABLE_NAME,
-                columns,
+                getColumns(),
                 Entry._ID + "= ?",
                 selectionArgs,
                 null,
@@ -166,22 +156,26 @@ public class Reminder extends  AbstractModel implements Parcelable {
         return null;
     }
 
+    private static String[] getColumns() {
+        String[] columns = {
+                Entry._ID,
+                Entry.COLUMN_NAME_TEXT,
+                Entry.COLUMN_NAME_DATE,
+                Entry.COLUMN_NAME_ALLDAY,
+                Entry.COLUMN_NAME_REPEAT,
+                Entry.COLUMN_NAME_CREATED,
+                Entry.COLUMN_NAME_UPDATED
+        };
+
+        return columns;
+    }
+
     public static ArrayList<Reminder> all() {
         ArrayList<Reminder> list = new ArrayList<>();
 
-        String[] columns = {
-            Entry._ID,
-            Entry.COLUMN_NAME_TEXT,
-            Entry.COLUMN_NAME_DATE,
-            Entry.COLUMN_NAME_ALLDAY,
-            Entry.COLUMN_NAME_REPEAT,
-            Entry.COLUMN_NAME_CREATED,
-            Entry.COLUMN_NAME_UPDATED
-        };
-
         Cursor cursor = dbHelper.getReadableDatabase().query(
             Entry.TABLE_NAME,
-            columns,
+            getColumns(),
             null,
             null,
             null,
