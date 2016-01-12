@@ -1,8 +1,10 @@
 package com.cretueusebiu.taskmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 
 import com.cretueusebiu.taskmanager.calendar.DatesDecorator;
@@ -10,13 +12,16 @@ import com.cretueusebiu.taskmanager.models.Reminder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CalendarActivity extends AbstractActivity {
+public class CalendarActivity extends AbstractActivity implements OnDateSelectedListener {
+
+    private HashMap<String, Integer> days;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,11 @@ public class CalendarActivity extends AbstractActivity {
     private void initCalendar() {
         MaterialCalendarView calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
 
+        calendarView.setOnDateChangedListener(this);
+
         ArrayList<Reminder> reminders = Reminder.all();
 
-        HashMap<String, Integer> days = new HashMap<>();
+        days = new HashMap<>();
         HashMap<String, CalendarDay> dates = new HashMap<>();
 
         for (Reminder reminder : reminders) {
@@ -92,5 +99,16 @@ public class CalendarActivity extends AbstractActivity {
         key += c.get(Calendar.MONTH);
         key += c.get(Calendar.YEAR);
         return key;
+    }
+
+    @Override
+     public void onDateSelected(MaterialCalendarView widget, CalendarDay day, boolean selected) {
+        String key = getDayKey(day.getCalendar());
+
+        if (days.containsKey(key)) {
+            Intent intent = new Intent(this, RemindersActivity.class);
+            intent.putExtra("time", day.getCalendar().getTimeInMillis());
+            startActivity(intent);
+        }
     }
 }

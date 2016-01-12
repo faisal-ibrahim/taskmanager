@@ -18,7 +18,9 @@ import com.cretueusebiu.taskmanager.alarm.ReminderManager;
 import com.cretueusebiu.taskmanager.models.Reminder;
 import com.cretueusebiu.taskmanager.models.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RemindersActivity extends AbstractActivity {
 
@@ -37,7 +39,18 @@ public class RemindersActivity extends AbstractActivity {
 
         initialize();
 
-        reminders = Reminder.all();
+        long time = getIntent().getLongExtra("time", 0);
+
+        if (time != 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(time);
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            setTitle("Reminders: " + df.format(cal.getTime()));
+
+            reminders = filterOnDay(cal.get(Calendar.DAY_OF_MONTH));
+        } else {
+            reminders = Reminder.all();
+        }
 
         reminderManager = new ReminderManager(this);
 
@@ -182,5 +195,17 @@ public class RemindersActivity extends AbstractActivity {
             }
         }
         return -1;
+    }
+
+    private ArrayList<Reminder> filterOnDay(int day) {
+        ArrayList<Reminder> list = new ArrayList<Reminder>();
+
+        for (Reminder reminder : Reminder.all()) {
+            if (reminder.getCalendar().get(Calendar.DAY_OF_MONTH) == day) {
+                list.add(reminder);
+            }
+        }
+
+        return list;
     }
 }
