@@ -41,7 +41,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Reminder reminder = Reminder.find(id);
 
-        Intent dIntent = new Intent(context, RemindersActivity.class);
+        Intent dIntent = new Intent(context, DisplayReminderActivity.class);
+        dIntent.putExtra("reminder_id", id);
         PendingIntent contentIntent =
                 PendingIntent.getActivity(context, Integer.parseInt(id), dIntent, 0);
 
@@ -50,7 +51,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                         .setSmallIcon(R.drawable.ic_access_time)
                         .setContentTitle("Reminder")
                         .setContentText(reminder.getText())
-                        .setContentIntent(contentIntent);
+                        .setContentIntent(contentIntent)
+                        .setAutoCancel(true);
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
