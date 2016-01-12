@@ -12,15 +12,16 @@ import java.util.Calendar;
 
 abstract public class AbstractModel {
 
-    public static final int DATABASE_VERSION = 2;
-    public static final String DATABASE_NAME = "TaskManager11.db";
-
     protected static SQLiteOpenHelper dbHelper;
     protected static SimpleDateFormat dateFormat;
 
     public static void setContext(Context context) {
         dbHelper = new Helper(context);
         dateFormat = new SimpleDateFormat("MM/dd/yyyy kk:mm");
+    }
+
+    public static SQLiteOpenHelper getDbHelper() {
+        return dbHelper;
     }
 
     public abstract void save();

@@ -13,18 +13,20 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Export data"
-        android:id="@+id/button2"
+        android:text="Create Backup"
+        android:id="@+id/create_backup"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:layout_alignRight="@+id/backup_list"
+        android:layout_alignEnd="@+id/backup_list" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/backup_list"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/create_backup"
         android:layout_marginTop="20dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

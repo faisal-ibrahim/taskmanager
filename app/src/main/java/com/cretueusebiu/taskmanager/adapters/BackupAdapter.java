@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.cretueusebiu.taskmanager.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BackupAdapter extends ArrayAdapter<String> {
@@ -19,7 +22,7 @@ public class BackupAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String backup = getItem(position);
+        String filename = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.backup_item, parent, false);
@@ -27,7 +30,11 @@ public class BackupAdapter extends ArrayAdapter<String> {
 
         TextView nameView = (TextView) convertView.findViewById(R.id.backup_item_name);
 
-        nameView.setText(backup);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(Long.parseLong(filename));
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy kk:mm");
+
+        nameView.setText(df.format(cal.getTime()));
 
         return convertView;
     }
