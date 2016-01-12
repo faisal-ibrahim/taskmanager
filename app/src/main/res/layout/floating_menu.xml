@@ -18,6 +18,7 @@
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true"
         fab:menu_backgroundColor="#ccffffff"
+        fab:fab_colorNormal="@color/colorAccent"
         fab:menu_fab_label="Task" >
 
         <com.github.clans.fab.FloatingActionButton
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             fab:fab_size="mini"
             android:src="@drawable/ic_access_time2"
+            fab:fab_colorNormal="@color/colorAccent"
             fab:fab_label="Reminder" />
 
     </com.github.clans.fab.FloatingActionMenu>
