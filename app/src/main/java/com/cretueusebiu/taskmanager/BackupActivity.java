@@ -11,8 +11,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.cretueusebiu.taskmanager.adapters.BackupAdapter;
+import com.cretueusebiu.taskmanager.alarm.ReminderManager;
 import com.cretueusebiu.taskmanager.backup.BackupManager;
 import com.cretueusebiu.taskmanager.models.AbstractModel;
+import com.cretueusebiu.taskmanager.models.Reminder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class BackupActivity extends AbstractActivity {
     private BackupAdapter adapter;
     private BackupManager backupManager;
     private ArrayList<String> backups;
+    private ReminderManager reminderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class BackupActivity extends AbstractActivity {
         initialize();
 
         backupManager = new BackupManager(AbstractModel.getDbHelper(), packageName);
+        reminderManager = new ReminderManager(this);
 
         backups = backupManager.getBackups();
 
@@ -64,22 +68,39 @@ public class BackupActivity extends AbstractActivity {
 
         switch (item.getItemId()) {
             case R.id.backup_item_menu_restore:
-                try {
-                    backupManager.restore(filename);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return true;
-
+                return onContextItemRestore(filename);
             case R.id.backup_item_menu_delete:
-                backups.remove(filename);
-                adapter.notifyDataSetChanged();
-                backupManager.delete(filename);
-                return true;
-
+                return onContextItemDelete(filename);
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private boolean onContextItemRestore(String filename) {
+        try {
+            for (Reminder reminder : Reminder.all()) {
+                reminderManager.cancel(reminder);
+            }
+
+            backupManager.restore(filename);
+
+            for (Reminder reminder : Reminder.all()) {
+                reminderManager.set(reminder);
+            }
+
+            Toast.makeText(this, "Backup restored!", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    private boolean onContextItemDelete(String filename) {
+        backups.remove(filename);
+        adapter.notifyDataSetChanged();
+        backupManager.delete(filename);
+        return true;
     }
 
     private View.OnClickListener backupBtnListener = new View.OnClickListener() {
