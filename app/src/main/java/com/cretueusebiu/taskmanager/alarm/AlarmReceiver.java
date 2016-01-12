@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.cretueusebiu.taskmanager.DisplayReminderActivity;
 import com.cretueusebiu.taskmanager.R;
 import com.cretueusebiu.taskmanager.RemindersActivity;
+import com.cretueusebiu.taskmanager.models.AbstractModel;
 import com.cretueusebiu.taskmanager.models.Reminder;
 
 import java.util.Calendar;
@@ -32,6 +33,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (id == null) {
             return;
+        }
+
+        if (AbstractModel.getDbHelper() == null) {
+            AbstractModel.setContext(context);
         }
 
         Reminder reminder = Reminder.find(id);

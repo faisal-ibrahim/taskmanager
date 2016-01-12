@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 abstract public class AbstractModel {
 
-    protected static SQLiteOpenHelper dbHelper;
+    protected static SQLiteOpenHelper dbHelper = null;
     protected static SimpleDateFormat dateFormat;
 
     public static void setContext(Context context) {
