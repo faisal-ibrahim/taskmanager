@@ -28,6 +28,7 @@
             fab:fab_size="mini"
             android:src="@drawable/ic_access_time2"
             fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccent"
             fab:fab_label="Reminder" />
 
     </com.github.clans.fab.FloatingActionMenu>
