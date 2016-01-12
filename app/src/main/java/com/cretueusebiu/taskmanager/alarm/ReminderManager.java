@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.cretueusebiu.taskmanager.models.Reminder;
 
+import java.util.Calendar;
+
 public class ReminderManager {
 
     protected Context context;
@@ -21,7 +23,9 @@ public class ReminderManager {
     public void set(Reminder reminder) {
         int interval = getInterval(reminder);
         PendingIntent intent = getIntent(reminder);
-        long triggerAt =  reminder.getCalendar().getTimeInMillis();
+        Calendar cal = reminder.getCalendar();
+        cal.set(Calendar.SECOND, 0);
+        long triggerAt =  cal.getTimeInMillis();
 
         if (reminder.getRepeat() == Reminder.DOES_NOT_REPEAT) {
             alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAt, intent);
